@@ -71,8 +71,15 @@ ul.m li.done:before{background:var(--grn);border-color:var(--grn)}ul.m li.done{t
 .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 .flow{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:.8em 0}
 .flow b{background:var(--card);border:2px solid var(--ink);border-radius:12px;padding:4px 10px;font-family:var(--mono);font-size:.85em}
-.steps label{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid rgba(128,128,128,.35);cursor:pointer}
+.steps .step{padding:10px 0;border-bottom:1px solid rgba(128,128,128,.35)}
+.steps .step:last-child{border-bottom:0}
+.steps label{display:flex;gap:12px;align-items:flex-start;cursor:pointer}
 .steps input{width:20px;height:20px;margin-top:3px;accent-color:var(--grn);flex:none}
+.steps .why{display:block;color:var(--mut);font-size:.95em}
+.steps details,.more{background:none;border:0;border-radius:0;padding:0;margin:2px 0 0 32px}
+.steps summary,.more summary{font:600 .9em var(--sans);color:var(--blue);display:inline-block;padding:2px 0}
+.steps details p,.more p{margin:.3em 0 .4em;font-size:.95em}
+.more{margin:14px 0 0}
 .url{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
 .url input{font:inherit;padding:8px 12px;border:2px solid var(--ink);border-radius:12px;background:var(--card);color:var(--ink);width:170px}
 .res{font-family:var(--mono);font-weight:500;word-break:break-all;margin-top:10px}
@@ -81,7 +88,7 @@ a.btn{display:inline-block;text-decoration:none;color:#fff;line-height:1.4}.btn.
 .grid2{display:grid;grid-template-columns:1.1fr 1fr;gap:18px;margin-bottom:18px}
 ul.cmds{list-style:none;padding:0;margin:.4em 0 0}ul.cmds li{padding:8px 0;border-bottom:1px solid rgba(128,128,128,.35)}ul.cmds li:last-child{border:0}ul.cmds code{display:block;font-weight:500}ul.cmds span{color:var(--mut);font-size:.95em}
 .cta{display:flex;align-items:center;gap:20px;flex-wrap:wrap;justify-content:space-between}.cta p{margin:0}
-.steps{counter-reset:s}.steps label{counter-increment:s}.steps label>span:before{content:counter(s) ". ";font-weight:700;color:var(--blue)}
+.steps{counter-reset:s}.steps .step{counter-increment:s}.steps label>span:before{content:counter(s) ". ";font-weight:700;color:var(--blue)}
 .ph{background:var(--py);padding:0 5px;border-radius:6px}
 .tip{background:var(--card);border:2px solid var(--ink);border-radius:14px;padding:12px 16px;margin-top:14px}
 .words{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.words .card{padding:14px 18px}.words b{font-family:var(--mono);display:block;margin-bottom:2px}.words span{color:var(--mut);font-size:.95em;line-height:1.45;display:block}
@@ -223,65 +230,109 @@ footer{padding:36px 0 50px;color:var(--mut)}
      Put your site on the internet
     </h2>
     <p>
-     GitHub Pages hosts websites for free, straight from a repository on GitHub. Follow the numbers and tick each step as you go. Your progress stays in this browser.
+     GitHub Pages hosts websites for free, straight from a repo. Tick each step as you go. Tap <b>&#9656;</b> if you need more detail.
     </p>
     <div class="card pg">
      <p style="margin-top:0">
-      <b>Before you start:</b> open <b>PowerShell</b> (Windows: Start menu, type <b>PowerShell</b>, press Enter). Every command below goes there. Replace <span class="ph">your-username</span> with your GitHub username.
+      <b>Before you start:</b> open <b>PowerShell</b> (Start menu &rarr; type <b>PowerShell</b> &rarr; Enter) and type every command there. Swap <span class="ph">your-username</span> for your GitHub username.
      </p>
      <div class="steps" id="steps">
-      <label>
-       <input type="checkbox"/>
-       <span>
-        <b>Fork the repository.</b> Open <a href="https://github.com/JavanMyna/git-started" target="_blank" rel="noopener">JavanMyna/git-started</a> on GitHub and click <b>Fork</b> (top right). A <b>repository</b> (repo) is a project folder that Git tracks. A <b>fork</b> is your own copy of it on GitHub.
-       </span>
-      </label>
-      <label>
-       <input type="checkbox"/>
-       <span>
-        <b>Clone your fork onto your laptop.</b> In PowerShell run
-        <code>git clone https://github.com/<span class="ph">your-username</span>/git-started.git</code>
-        then <code>cd git-started</code> to step inside the folder. (Cloning means downloading it.)
-       </span>
-      </label>
-      <label>
-       <input type="checkbox"/>
-       <span>
-        <b>Change something.</b> Run <code>notepad index.html</code>. Notepad opens with the page&rsquo;s code. Press <b>Ctrl+F</b>, search for <code>EDIT HERE</code>, and change the heading text just below it to your own words. Save with <b>Ctrl+S</b>, then close Notepad. Want to see it? Run <code>start index.html</code> to open it in your browser.
-       </span>
-      </label>
-      <label>
-       <input type="checkbox"/>
-       <span>
-        <b>Save a snapshot (commit).</b> Run <code>git add .</code> to pick what to save (the dot means everything), then <code>git commit -m "my first change"</code> to save it with a message. If Git says &ldquo;Please tell me who you are&rdquo;, see <a href="#stuck">Stuck?</a> below.
-       </span>
-      </label>
-      <label>
-       <input type="checkbox"/>
-       <span>
-        <b>Push to GitHub.</b> Run <code>git push</code>. The first time, a sign-in window pops up: choose to sign in with your browser, approve it, then come back to PowerShell. You&rsquo;ll see <code>main -&gt; main</code> when it works. (Push means uploading your commits.)
-       </span>
-      </label>
-      <label>
-       <input type="checkbox"/>
-       <span>
-        <b>Turn on GitHub Pages in your repository&rsquo;s settings.</b> In your browser open your fork on GitHub (<code>github.com/<span class="ph">your-username</span>/git-started</code>) and click its <b>Settings</b> tab. That&rsquo;s the repository&rsquo;s settings, not your account settings. In the left sidebar click <b>Pages</b>. Under Build and deployment choose <b>Deploy from a branch</b>, set the branch to <code>main</code> and the folder to <code>/ (root)</code>, then click <b>Save</b>.
-       </span>
-      </label>
-      <label>
-       <input type="checkbox"/>
-       <span>
-        <b>Visit your site.</b> Wait about a minute, then open your address. Build it with the box below.
-       </span>
-      </label>
+      <div class="step">
+       <label>
+        <input type="checkbox"/>
+        <span>
+         <b>Fork the repo.</b> Open <a href="https://github.com/JavanMyna/git-started" target="_blank" rel="noopener">JavanMyna/git-started</a> and click <b>Fork</b>.
+         <span class="why">Fork = your own copy on GitHub.</span>
+        </span>
+       </label>
+       <details>
+        <summary>More details</summary>
+        <p>The <b>Fork</b> button is at the top right. A <b>repository</b> (repo) is a project folder that Git keeps track of.</p>
+       </details>
+      </div>
+      <div class="step">
+       <label>
+        <input type="checkbox"/>
+        <span>
+         <b>Clone it.</b> <code>git clone https://github.com/<span class="ph">your-username</span>/git-started.git</code> then <code>cd git-started</code>
+         <span class="why">Download your fork to your laptop and step inside.</span>
+        </span>
+       </label>
+       <details>
+        <summary>More details</summary>
+        <p>Use your own username in the link, so you clone your fork and not mine. <code>cd</code> moves you into the new folder.</p>
+       </details>
+      </div>
+      <div class="step">
+       <label>
+        <input type="checkbox"/>
+        <span>
+         <b>Change something.</b> <code>notepad index.html</code>
+         <span class="why">Edit the heading, save, close Notepad.</span>
+        </span>
+       </label>
+       <details>
+        <summary>More details</summary>
+        <p>Press <b>Ctrl+F</b>, search for <code>EDIT HERE</code>, and change the heading just below it to your own words. Save with <b>Ctrl+S</b>. Want a peek? Run <code>start index.html</code> to open it in your browser.</p>
+       </details>
+      </div>
+      <div class="step">
+       <label>
+        <input type="checkbox"/>
+        <span>
+         <b>Commit.</b> <code>git add .</code> then <code>git commit -m "my first change"</code>
+         <span class="why">Save a snapshot of your change.</span>
+        </span>
+       </label>
+       <details>
+        <summary>More details</summary>
+        <p><code>git add .</code> picks what to save (the dot means everything). <code>commit -m</code> saves it with a short message. If Git says &ldquo;Please tell me who you are&rdquo;, see <a href="#stuck">Stuck?</a> below.</p>
+       </details>
+      </div>
+      <div class="step">
+       <label>
+        <input type="checkbox"/>
+        <span>
+         <b>Push.</b> <code>git push</code>
+         <span class="why">Upload your snapshot to GitHub.</span>
+        </span>
+       </label>
+       <details>
+        <summary>More details</summary>
+        <p>The first time, a sign-in window pops up: sign in with your browser, approve it, then come back to PowerShell. You&rsquo;ll see <code>main -&gt; main</code> when it works.</p>
+       </details>
+      </div>
+      <div class="step">
+       <label>
+        <input type="checkbox"/>
+        <span>
+         <b>Turn on Pages.</b> Your fork &rarr; <b>Settings</b> &rarr; <b>Pages</b> &rarr; <b>Deploy from a branch</b> &rarr; <code>main</code> and <code>/ (root)</code> &rarr; <b>Save</b>
+         <span class="why">Tell GitHub to turn your repo into a website.</span>
+        </span>
+       </label>
+       <details>
+        <summary>More details</summary>
+        <p>Open your fork at <code>github.com/<span class="ph">your-username</span>/git-started</code> and click its own <b>Settings</b> tab, not your account settings. <b>Pages</b> is in the left sidebar, under Build and deployment.</p>
+       </details>
+      </div>
+      <div class="step">
+       <label>
+        <input type="checkbox"/>
+        <span>
+         <b>Visit your site.</b> Wait about a minute, then open your address.
+         <span class="why">Build it with the box below.</span>
+        </span>
+       </label>
+      </div>
      </div>
-     <details>
+     <details class="more">
       <summary>Using a Mac or Linux?</summary>
       <p>Open the Terminal app instead of PowerShell. The <code>git</code> commands are the same. Differences: open <code>index.html</code> in any text editor (such as VS Code) instead of Notepad, and preview it with <code>open index.html</code> (Mac) or <code>xdg-open index.html</code> (Linux). To sign in before your first push, run <code>gh auth login</code> (needs the GitHub CLI), or paste a personal access token when Git asks for a password (see Stuck? below).</p>
      </details>
-     <div class="tip">
-      <b>Good to know:</b> every <code>.html</code> file in your repo gets its own address. A file called <code>about.html</code> would live at <code>your-username.github.io/git-started/about.html</code>. <code>index.html</code> is just the one shown at the main address.
-     </div>
+     <details class="more">
+      <summary>Good to know: other .html files</summary>
+      <p>Every <code>.html</code> file in your repo gets its own address. A file called <code>about.html</code> would live at <code>your-username.github.io/git-started/about.html</code>. <code>index.html</code> is just the one shown at the main address.</p>
+     </details>
      <div class="url">
       <input aria-label="GitHub username" id="u" placeholder="GitHub username"/>
       <input aria-label="Repo name" id="r" placeholder="repo name (git-started)"/>
