@@ -90,20 +90,17 @@ footer{padding:36px 0 50px;color:var(--mut)}
      <a href="#play">
       Practice
      </a>
-     <a href="#learn">
-      Learn
-     </a>
      <a href="#pages">
       Go live
+     </a>
+     <a href="#learn">
+      The loop
      </a>
      <a href="#stuck">
       Stuck?
      </a>
      <a href="#cheat">
       Cheat sheet
-     </a>
-     <a href="#hi">
-      Say hi
      </a>
     </nav>
    </div>
@@ -170,77 +167,6 @@ footer{padding:36px 0 50px;color:var(--mut)}
      </div>
     </div>
    </section>
-   <section id="learn">
-    <h2>
-     The ideas, fast
-    </h2>
-    <div class="grid3">
-     <div class="card pb">
-      <h3>
-       Why Git?
-      </h3>
-      <p>
-       Git remembers every version of your project. Break something? Go back. Working with friends? Everyone&rsquo;s changes fit together. Laptop dies? Your code is on GitHub.
-      </p>
-     </div>
-     <div class="card pr">
-      <h3>
-       Git vs GitHub
-      </h3>
-      <p>
-       <b>
-        Git
-       </b>
-       is the tool on your laptop.
-       <b>
-        GitHub
-       </b>
-       is the website that stores Git projects online so you can share them and team up.
-      </p>
-     </div>
-     <div class="card pg">
-      <h3>
-       Branches
-      </h3>
-      <p>
-       A branch is a safe copy to experiment on.
-       <code>
-        main
-       </code>
-       stays clean. Like it? Merge it. Hate it? Delete it.
-      </p>
-     </div>
-    </div>
-    <div class="card" style="margin-top:18px">
-     <h3>
-      The loop you&rsquo;ll repeat forever
-     </h3>
-     <div class="flow">
-      <b>
-       edit files
-      </b>
-      &rarr;
-      <b>
-       git add .
-      </b>
-      &rarr;
-      <b>
-       git commit -m "msg"
-      </b>
-      &rarr;
-      <b>
-       git push
-      </b>
-     </div>
-     <p style="margin-bottom:0">
-      Add picks what goes in the snapshot. Commit saves it with a message. Push uploads it.
-      <code>
-       git status
-      </code>
-      is your best friend in between.
-     </p>
-    </div>
-   </section>
    <section id="pages">
     <h2>
      Put your site on the internet
@@ -256,7 +182,7 @@ footer{padding:36px 0 50px;color:var(--mut)}
         <b>
          Fork
         </b>
-        the starter repo (Fork button, top right).
+        <a href="https://github.com/JavanMyna/git-started" target="_blank" rel="noopener">JavanMyna/git-started</a> (Fork button, top right).
        </span>
       </label>
       <label>
@@ -282,11 +208,7 @@ footer{padding:36px 0 50px;color:var(--mut)}
         <b>
          Log in once:
         </b>
-        run
-        <code>
-         gh auth login
-        </code>
-        , or use a personal access token as your password.
+        Windows: push and sign in when the browser pops up. Mac/Linux: run <code>gh auth login</code>.
        </span>
       </label>
       <label>
@@ -326,16 +248,75 @@ footer{padding:36px 0 50px;color:var(--mut)}
         / (root) &rarr; Save.
        </span>
       </label>
+     <label>
+      <input type="checkbox"/>
+      <span>
+       <b>
+        Add your own page:
+       </b>
+       copy your CCA102 tutorial HTML file into the folder (no spaces in the name), then
+       <code>
+        git add .
+       </code>
+       ,
+       <code>
+        git commit -m "add my page"
+       </code>
+       ,
+       <code>
+        git push
+       </code>
+       . It goes live at
+       <code>
+        username.github.io/git-started/yourfile.html
+       </code>
+       .
+      </span>
+     </label>
      </div>
      <div class="url">
       <input aria-label="GitHub username" id="u" placeholder="GitHub username"/>
-      <input aria-label="Repo name" id="r" placeholder="repo name"/>
+      <input aria-label="Repo name" id="r" placeholder="repo name (git-started)"/>
       <button class="btn" id="goUrl">
        Show my URL
       </button>
      </div>
      <div aria-live="polite" class="res" id="res">
      </div>
+    </div>
+   </section>
+   <section id="learn">
+    <h2>
+     The loop
+    </h2>
+    <div class="card">
+     <h3>
+      The loop you&rsquo;ll repeat forever
+     </h3>
+     <div class="flow">
+      <b>
+       edit files
+      </b>
+      &rarr;
+      <b>
+       git add .
+      </b>
+      &rarr;
+      <b>
+       git commit -m "msg"
+      </b>
+      &rarr;
+      <b>
+       git push
+      </b>
+     </div>
+     <p style="margin-bottom:0">
+      Add picks what goes in the snapshot. Commit saves it with a message. Push uploads it.
+      <code>
+       git status
+      </code>
+      is your best friend in between.
+     </p>
     </div>
    </section>
    <section id="stuck">
@@ -359,11 +340,7 @@ footer{padding:36px 0 50px;color:var(--mut)}
       <code>
        cd
       </code>
-      into your project. Or run
-      <code>
-       git init
-      </code>
-      if it&rsquo;s a new one.
+      into your project.
      </p>
     </details>
     <details>
@@ -375,19 +352,7 @@ footer{padding:36px 0 50px;color:var(--mut)}
       <code>
        gh auth login
       </code>
-      , or create a personal access token (GitHub Settings &rarr; Developer settings) and paste it when Git asks for a password. Nothing shows while you paste. That&rsquo;s normal.
-     </p>
-    </details>
-    <details>
-     <summary>
-      nothing to commit, working tree clean
-     </summary>
-     <p>
-      You haven&rsquo;t changed anything since the last commit. Edit a file, save it, then
-      <code>
-       git add .
-      </code>
-      again.
+      , or (fallback) create a personal access token (GitHub Settings &rarr; Developer settings) and paste it when Git asks for a password. Nothing shows while you paste. That&rsquo;s normal.
      </p>
     </details>
     <details>
@@ -404,22 +369,6 @@ footer{padding:36px 0 50px;color:var(--mut)}
        git config --global user.email "you@example.com"
       </code>
       .
-     </p>
-    </details>
-    <details>
-     <summary>
-      src refspec main does not match any
-     </summary>
-     <p>
-      You pushed before your first commit. Run
-      <code>
-       git add .
-      </code>
-      and
-      <code>
-       git commit -m "first commit"
-      </code>
-      , then push.
      </p>
     </details>
     <details>
@@ -551,8 +500,8 @@ $('#reset').onclick=fresh;fresh();
 const steps=[...document.querySelectorAll('#steps input')];
 try{const s=JSON.parse(localStorage.getItem('gdgSteps')||'[]');steps.forEach((x,i)=>x.checked=!!s[i])}catch(e){}
 steps.forEach(x=>x.onchange=()=>{try{localStorage.setItem('gdgSteps',JSON.stringify(steps.map(y=>y.checked)))}catch(e){}});
-$('#goUrl').onclick=()=>{const u=$('#u').value.trim()||'USERNAME',r=$('#r').value.trim()||'REPO';$('#res').textContent=`https://${u.toLowerCase()}.github.io/${r}/`};
-const CH=[['cd <folder>','move into a folder'],['ls','list files'],['git init','start tracking this folder'],['git status','what changed?'],['git add .','stage everything'],['git commit -m "msg"','save a snapshot'],['git log --oneline','see your history'],['git switch -c name','make a new branch'],['git merge name','bring a branch in'],['git push','upload to GitHub'],['git pull','download new changes'],['git clone <url>','copy a repo to your laptop']];
+$('#goUrl').onclick=()=>{const u=$('#u').value.trim()||'USERNAME',r=$('#r').value.trim()||'git-started';$('#res').textContent=`https://${u.toLowerCase()}.github.io/${r}/`};
+const CH=[['git status','what changed?'],['git add .','stage everything'],['git commit -m "msg"','save a snapshot'],['git push','upload to GitHub'],['git switch -c name','make a new branch'],['git log --oneline','see your history']];
 CH.forEach(([c,d])=>{const b=document.createElement('button');b.innerHTML=`<code></code><small>${d}</small>`;b.firstChild.textContent=c;
  b.onclick=()=>{const done=()=>$('#copied').textContent='Copied: '+c;(navigator.clipboard?navigator.clipboard.writeText(c):Promise.reject()).then(done,()=>{const t=document.createElement('textarea');t.value=c;document.body.appendChild(t);t.select();try{document.execCommand('copy')}catch(e){}t.remove();done()})};
  $('#cheatGrid').appendChild(b)});
