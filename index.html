@@ -42,20 +42,26 @@ code,.mono{font-family:var(--mono);font-size:.9em}
 #out div{min-height:1.5em}.p{color:#5cdb6d}.y{color:#ffd427}.r{color:#ff7daf}.d{color:#9aa0a6}.c{color:#57caff}
 .row{display:flex;gap:8px;padding:0 14px 12px;align-items:center}.row span{color:#5cdb6d}
 #cmd{flex:1;background:transparent;border:0;color:inherit;font:inherit;outline:0;min-width:0}
-.chipbox{padding:12px;border-top:1px solid #444}
-.legend{display:flex;gap:14px;flex-wrap:wrap;font:400 11px var(--mono);color:#b5b5b5;margin-bottom:10px}
-.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:-1px}
-.chips{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:8px}
-.chips button{text-align:left;font:inherit;border:2px solid #1e1e1e;border-radius:14px;padding:8px 11px;cursor:pointer;color:#1e1e1e;position:relative;transition:transform .12s,box-shadow .12s;box-shadow:0 3px 0 rgba(0,0,0,.45)}
-.chips button code{display:block;font:600 12px/1.35 var(--mono);overflow-wrap:break-word;padding-right:16px}
-.chips button small{display:block;font:400 12px var(--sans);margin-top:2px}
-.chips button:hover{transform:translateY(-2px);box-shadow:0 5px 0 rgba(0,0,0,.45)}
-.chips button:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(0,0,0,.45)}
-.chips button.pop{animation:pop .35s ease}
+.chipbox{padding:12px 14px 14px;border-top:1px solid #444}
+.hint{font:400 12px var(--mono);color:#b5b5b5;margin-bottom:12px}
+#chips{display:flex;flex-direction:column;gap:12px}
+.stage .sl{display:flex;align-items:center;gap:8px;font:500 11px var(--mono);color:#b5b5b5;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.stage .sl i{width:9px;height:9px;border-radius:50%;background:var(--ca)}
+.stage .g{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px}
+.s1{--cb:#1d3a46;--cc:#3b7f99;--ca:#57caff}.s2{--cb:#4a3d12;--cc:#8a6d12;--ca:#ffd427}.s3{--cb:#1f4024;--cc:#3a7d44;--ca:#5cdb6d}.s4{--cb:#4a2a2a;--cc:#a85a6b;--ca:#ff7daf}
+#chips button{display:grid;grid-template-columns:22px 1fr;column-gap:9px;align-items:start;text-align:left;font:inherit;color:#f0f0f0;background:var(--cb);border:2px solid var(--cc);border-radius:14px;padding:8px 10px;cursor:pointer;opacity:.78;transition:transform .12s,opacity .12s}
+#chips button .n{grid-row:1/3;width:22px;height:22px;border-radius:50%;background:var(--cc);color:#fff;font:600 11px var(--mono);display:grid;place-items:center;font-style:normal}
+#chips button code{font:600 12px/1.35 var(--mono);overflow-wrap:break-word;min-width:0}
+#chips button small{font:400 12px var(--sans);color:#b5b5b5;margin-top:2px}
+#chips button:hover{opacity:1;transform:translateY(-2px)}
+#chips button:active{transform:translateY(1px)}
+#chips button.next{opacity:1;border-color:var(--ca);box-shadow:0 0 0 1px var(--ca),0 0 16px -2px var(--ca);animation:glow 1.8s ease-in-out infinite}
+#chips button.next .n{background:var(--ca);color:#111}
+#chips button.done{opacity:.5}#chips button.done .n{background:#3a3a3a;color:var(--ca)}
+#chips button.pop{animation:pop .35s ease}
 @keyframes pop{0%{transform:scale(1)}35%{transform:scale(.93)}70%{transform:scale(1.07)}100%{transform:scale(1)}}
-.chips button.used:after{content:"\2713";position:absolute;top:6px;right:9px;font-weight:700}
-.k-f{background:#57caff}.k-s{background:#ffd427}.k-b{background:#5cdb6d}.k-u{background:#ff7daf}
-@media(prefers-reduced-motion:reduce){.chips button{transition:none}.chips button.pop{animation:none}}
+@keyframes glow{50%{box-shadow:0 0 0 1px var(--ca),0 0 24px 0 var(--ca)}}
+@media(prefers-reduced-motion:reduce){#chips button{transition:none}#chips button.next,#chips button.pop{animation:none}}
 .card{background:var(--card);border:2px solid var(--ink);border-radius:20px;padding:20px 22px}
 .pb{background:var(--pb)}.pr{background:var(--pr)}.py{background:var(--py)}.pg{background:var(--pg)}
 ul.m{list-style:none;padding:0;margin:.6em 0 0}
@@ -75,6 +81,10 @@ a.btn{display:inline-block;text-decoration:none;color:#fff;line-height:1.4}.btn.
 .grid2{display:grid;grid-template-columns:1.1fr 1fr;gap:18px;margin-bottom:18px}
 ul.cmds{list-style:none;padding:0;margin:.4em 0 0}ul.cmds li{padding:8px 0;border-bottom:1px solid rgba(128,128,128,.35)}ul.cmds li:last-child{border:0}ul.cmds code{display:block;font-weight:500}ul.cmds span{color:var(--mut);font-size:.95em}
 .cta{display:flex;align-items:center;gap:20px;flex-wrap:wrap;justify-content:space-between}.cta p{margin:0}
+.steps{counter-reset:s}.steps label{counter-increment:s}.steps label>span:before{content:counter(s) ". ";font-weight:700;color:var(--blue)}
+.ph{background:var(--py);padding:0 5px;border-radius:6px}
+.tip{background:var(--card);border:2px solid var(--ink);border-radius:14px;padding:12px 16px;margin-top:14px}
+.words{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.words .card{padding:14px 18px}.words b{font-family:var(--mono);display:block;margin-bottom:2px}.words span{color:var(--mut);font-size:.95em;line-height:1.45;display:block}
 details{background:var(--card);border:2px solid var(--ink);border-radius:16px;padding:12px 18px;margin:10px 0}
 summary{font-weight:600;cursor:pointer;font-family:var(--mono);font-size:.95em}
 details p{margin:.6em 0 .2em}
@@ -82,7 +92,7 @@ details p{margin:.6em 0 .2em}
 .cheat button{text-align:left;background:var(--card);color:var(--ink);border:2px solid var(--ink);border-radius:14px;padding:10px 14px;cursor:pointer;font:inherit}
 .cheat button:hover{background:var(--py)}.cheat code{display:block;font-weight:500}.cheat small{color:var(--mut)}
 footer{padding:36px 0 50px;color:var(--mut)}
-@media(max-width:820px){.play,.grid3,.grid2{grid-template-columns:1fr}nav{display:none}#out{height:280px}}
+@media(max-width:820px){.play,.grid3,.grid2,.words{grid-template-columns:1fr}nav{display:none}#out{height:280px}}
   </style>
  </head>
  <body>
@@ -105,6 +115,9 @@ footer{padding:36px 0 50px;color:var(--mut)}
      <a href="#play">
       Practice
      </a>
+     <a href="#words">
+      Words
+     </a>
      <a href="#pages">
       Go live
      </a>
@@ -125,11 +138,12 @@ footer{padding:36px 0 50px;color:var(--mut)}
   </header>
   <main class="wrap">
    <section id="play">
+    <!-- EDIT HERE: change the heading below to your own words, then save the file -->
     <h1>
      Git, but you can&rsquo;t break anything here.
     </h1>
     <p class="lead">
-     This is a pretend terminal. Type the commands from the talk, or tap a chip. Nothing touches your real files.
+     This is a pretend terminal, so you can&rsquo;t break anything. Follow the numbered chips (tap the glowing one) or type the command yourself. The <code>git</code> commands work the same way in PowerShell.
     </p>
     <div class="play">
      <div class="term">
@@ -150,8 +164,8 @@ footer{padding:36px 0 50px;color:var(--mut)}
        <input aria-label="Type a command" autocapitalize="off" autocomplete="off" id="cmd" spellcheck="false"/>
       </div>
       <div class="chipbox">
-       <div class="legend"><span><i class="k-f"></i>files</span><span><i class="k-s"></i>snapshots</span><span><i class="k-b"></i>branches</span><span><i class="k-u"></i>upload</span></div>
-       <div class="chips" id="chips"></div>
+       <div class="hint" id="hint"></div>
+       <div id="chips"></div>
       </div>
      </div>
      <div class="card py">
@@ -188,112 +202,85 @@ footer{padding:36px 0 50px;color:var(--mut)}
      </div>
     </div>
    </section>
+   <section id="words">
+    <h2>
+     Words you&rsquo;ll hear today
+    </h2>
+    <div class="words">
+     <div class="card"><b>repository (repo)</b><span>A project folder that Git keeps track of, with every saved snapshot.</span></div>
+     <div class="card"><b>commit</b><span>A saved snapshot of your files, with a short message about what changed.</span></div>
+     <div class="card"><b>push</b><span>Upload your new commits from your laptop to GitHub.</span></div>
+     <div class="card"><b>fork</b><span>Your own copy of someone else&rsquo;s repo, on GitHub.</span></div>
+     <div class="card"><b>clone</b><span>Download a repo from GitHub onto your laptop.</span></div>
+     <div class="card"><b>branch</b><span>A safe copy of your project to try ideas on. <code>main</code> is the original.</span></div>
+     <div class="card"><b>pull request</b><span>A request to merge your changes into someone else&rsquo;s project.</span></div>
+     <div class="card"><b>GitHub Pages</b><span>Free website hosting straight from a repo.</span></div>
+     <div class="card"><b>terminal</b><span>The text window where you type commands. On Windows we use PowerShell.</span></div>
+    </div>
+   </section>
    <section id="pages">
     <h2>
      Put your site on the internet
     </h2>
     <p>
-     GitHub Pages hosts websites for free. Tick each step as you go. Your progress stays in this browser.
+     GitHub Pages hosts websites for free, straight from a repository on GitHub. Follow the numbers and tick each step as you go. Your progress stays in this browser.
     </p>
     <div class="card pg">
+     <p style="margin-top:0">
+      <b>Before you start:</b> open <b>PowerShell</b> (Windows: Start menu, type <b>PowerShell</b>, press Enter). Every command below goes there. Replace <span class="ph">your-username</span> with your GitHub username.
+     </p>
      <div class="steps" id="steps">
       <label>
        <input type="checkbox"/>
        <span>
-        <b>
-         Fork
-        </b>
-        <a href="https://github.com/JavanMyna/git-started" target="_blank" rel="noopener">JavanMyna/git-started</a> (Fork button, top right).
+        <b>Fork the repository.</b> Open <a href="https://github.com/JavanMyna/git-started" target="_blank" rel="noopener">JavanMyna/git-started</a> on GitHub and click <b>Fork</b> (top right). A <b>repository</b> (repo) is a project folder that Git tracks. A <b>fork</b> is your own copy of it on GitHub.
        </span>
       </label>
       <label>
        <input type="checkbox"/>
        <span>
-        <b>
-         Clone
-        </b>
-        your fork:
-        <code>
-         git clone &lt;your-fork-url&gt;
-        </code>
-        , then
-        <code>
-         cd
-        </code>
-        into it.
+        <b>Clone your fork onto your laptop.</b> In PowerShell run
+        <code>git clone https://github.com/<span class="ph">your-username</span>/git-started.git</code>
+        then <code>cd git-started</code> to step inside the folder. (Cloning means downloading it.)
        </span>
       </label>
       <label>
        <input type="checkbox"/>
        <span>
-        <b>
-         Log in once:
-        </b>
-        Windows: push and sign in when the browser pops up. Mac/Linux: run <code>gh auth login</code>.
+        <b>Change something.</b> Run <code>notepad index.html</code>. Notepad opens with the page&rsquo;s code. Press <b>Ctrl+F</b>, search for <code>EDIT HERE</code>, and change the heading text just below it to your own words. Save with <b>Ctrl+S</b>, then close Notepad. Want to see it? Run <code>start index.html</code> to open it in your browser.
        </span>
       </label>
       <label>
        <input type="checkbox"/>
        <span>
-        <b>
-         Edit
-        </b>
-        <code>
-         index.html
-        </code>
-        , then
-        <code>
-         git add .
-        </code>
-        ,
-        <code>
-         git commit -m "my first site"
-        </code>
-        ,
-        <code>
-         git push
-        </code>
-        .
+        <b>Save a snapshot (commit).</b> Run <code>git add .</code> to pick what to save (the dot means everything), then <code>git commit -m "my first change"</code> to save it with a message. If Git says &ldquo;Please tell me who you are&rdquo;, see <a href="#stuck">Stuck?</a> below.
        </span>
       </label>
       <label>
        <input type="checkbox"/>
        <span>
-        <b>
-         Turn on Pages:
-        </b>
-        Settings &rarr; Pages &rarr; Deploy from a branch &rarr;
-        <code>
-         main
-        </code>
-        / (root) &rarr; Save.
+        <b>Push to GitHub.</b> Run <code>git push</code>. The first time, a sign-in window pops up: choose to sign in with your browser, approve it, then come back to PowerShell. You&rsquo;ll see <code>main -&gt; main</code> when it works. (Push means uploading your commits.)
        </span>
       </label>
-     <label>
-      <input type="checkbox"/>
-      <span>
-       <b>
-        Add your own page:
-       </b>
-       copy your CCA102 tutorial HTML file into the folder (no spaces in the name), then
-       <code>
-        git add .
-       </code>
-       ,
-       <code>
-        git commit -m "add my page"
-       </code>
-       ,
-       <code>
-        git push
-       </code>
-       . It goes live at
-       <code>
-        username.github.io/git-started/yourfile.html
-       </code>
-       .
-      </span>
-     </label>
+      <label>
+       <input type="checkbox"/>
+       <span>
+        <b>Turn on GitHub Pages in your repository&rsquo;s settings.</b> In your browser open your fork on GitHub (<code>github.com/<span class="ph">your-username</span>/git-started</code>) and click its <b>Settings</b> tab. That&rsquo;s the repository&rsquo;s settings, not your account settings. In the left sidebar click <b>Pages</b>. Under Build and deployment choose <b>Deploy from a branch</b>, set the branch to <code>main</code> and the folder to <code>/ (root)</code>, then click <b>Save</b>.
+       </span>
+      </label>
+      <label>
+       <input type="checkbox"/>
+       <span>
+        <b>Visit your site.</b> Wait about a minute, then open your address. Build it with the box below.
+       </span>
+      </label>
+     </div>
+     <details>
+      <summary>Using a Mac or Linux?</summary>
+      <p>Open the Terminal app instead of PowerShell. The <code>git</code> commands are the same. Differences: open <code>index.html</code> in any text editor (such as VS Code) instead of Notepad, and preview it with <code>open index.html</code> (Mac) or <code>xdg-open index.html</code> (Linux). To sign in before your first push, run <code>gh auth login</code> (needs the GitHub CLI), or paste a personal access token when Git asks for a password (see Stuck? below).</p>
+     </details>
+     <div class="tip">
+      <b>Good to know:</b> every <code>.html</code> file in your repo gets its own address. A file called <code>about.html</code> would live at <code>your-username.github.io/git-started/about.html</code>. <code>index.html</code> is just the one shown at the main address.
      </div>
      <div class="url">
       <input aria-label="GitHub username" id="u" placeholder="GitHub username"/>
@@ -405,11 +392,19 @@ footer{padding:36px 0 50px;color:var(--mut)}
       Authentication failed / password not accepted
      </summary>
      <p>
-      GitHub doesn&rsquo;t take your account password for pushes. Run
+      GitHub doesn&rsquo;t take your account password for pushes. On Windows, run <code>git push</code> again and finish the sign-in window that pops up. On Mac/Linux, run
       <code>
        gh auth login
       </code>
       , or (fallback) create a personal access token (GitHub Settings &rarr; Developer settings) and paste it when Git asks for a password. Nothing shows while you paste. That&rsquo;s normal.
+     </p>
+    </details>
+    <details>
+     <summary>
+      'git' is not recognized
+     </summary>
+     <p>
+      PowerShell can&rsquo;t find Git. Close PowerShell and open a fresh one (it only notices a new install after a restart). Still stuck? Git may not be installed yet, so ask a helper.
      </p>
     </details>
     <details>
@@ -492,7 +487,7 @@ footer{padding:36px 0 50px;color:var(--mut)}
    const $=s=>document.querySelector(s),out=$('#out'),inp=$('#cmd');
 let S,M,H=[],hi=0;
 const hash=()=>[...Array(7)].map(()=>(Math.random()*16|0).toString(16)).join('');
-function fresh(){S={files:{},rev:0,init:false,staged:new Set(),br:'main',brs:{main:{c:[],h:{}}}};M={};out.innerHTML='';document.querySelectorAll('#chips .used').forEach(b=>b.classList.remove('used'));
+function fresh(){S={files:{},rev:0,init:false,staged:new Set(),br:'main',brs:{main:{c:[],h:{}}}};M={};out.innerHTML='';resetChips();
  document.querySelectorAll('#missions li').forEach(l=>l.classList.remove('done'));
  say('Pretend terminal. Try: echo "Hello GDG" > index.html   then   git init','d')}
 function say(t,c){const d=document.createElement('div');if(c)d.className=c;d.textContent=t;out.appendChild(d);out.scrollTop=out.scrollHeight}
@@ -541,7 +536,7 @@ function git(a){const [c,...r]=a,b=B();
   mark('push');return say(`To github.com:you/my-site.git\n * [new branch]      ${S.br} -> ${S.br}\n\nNow open Settings → Pages on GitHub to go live.`,'p')}
  if(c==='pull')return say('Already up to date.');
  say(`git: '${c}' is not a command here. Try status, add, commit, log, branch, switch, merge, push.`,'y')}
-function run(line){line=line.trim();if(!line)return;say('~/my-site $ '+line,'d');H.push(line);hi=H.length;
+function run(line){line=line.trim();if(!line)return;say('~/my-site $ '+line,'d');H.push(line);hi=H.length;adv(line);
  const a=line.match(/"[^"]*"|'[^']*'|\S+/g)||[],c=a[0];
  let m=line.match(/^echo\s+(?:"([^"]*)"|'([^']*)'|(\S+))\s*>>?\s*(\S+)$/);
  if(m){S.files[m[4]]=++S.rev;return}
@@ -556,8 +551,16 @@ function run(line){line=line.trim();if(!line)return;say('~/my-site $ '+line,'d')
 inp.addEventListener('keydown',e=>{if(e.key==='Enter'){run(inp.value);inp.value=''}
  else if(e.key==='ArrowUp'&&H.length){hi=Math.max(0,hi-1);inp.value=H[hi];e.preventDefault()}
  else if(e.key==='ArrowDown'){hi=Math.min(H.length,hi+1);inp.value=H[hi]||'';e.preventDefault()}});
-const CP=[['echo "Hello GDG" > index.html','make a file','f'],['git init','start tracking this folder','f'],['git status','what changed?','s'],['git add .','stage everything','s'],['git commit -m "first commit"','save a snapshot','s'],['git log','see your history','s'],['git switch -c dark-mode','new branch, safe copy','b'],['echo "dark" > dark.css','make a file on the branch','f'],['git add .','stage it','s'],['git commit -m "dark mode"','snapshot on the branch','s'],['git switch main','hop back to main','b'],['git merge dark-mode','bring the idea back','b'],['git push','upload to GitHub','u']];
-CP.forEach(([t,d,k])=>{const b=document.createElement('button');b.className='k-'+k;b.innerHTML='<code></code><small></small>';b.firstChild.textContent=t;b.lastChild.textContent=d;b.onclick=()=>{run(t);inp.focus();b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop','used')};$('#chips').appendChild(b)});
+const ST=[['Start','s1'],['Save a snapshot','s2'],['Branch out','s3'],['Upload','s4']];
+const CP=[['echo "Hello GDG" > index.html','make a file',0],['git init','start tracking this folder',0],['git status','what changed?',1],['git add .','stage everything',1],['git commit -m "first commit"','save a snapshot',1],['git log','see your history',1],['git switch -c dark-mode','new branch, safe copy',2],['echo "dark" > dark.css','make a file on the branch',2],['git add .','stage it',2],['git commit -m "dark mode"','snapshot on the branch',2],['git switch main','hop back to main',2],['git merge dark-mode','bring the idea back',2],['git push','upload to GitHub',3]];
+let P=0;const CB=[],hint=$('#hint');
+const GS=ST.map(([n,k],i)=>{const d=document.createElement('div');d.className='stage '+k;d.innerHTML='<div class="sl"><i></i></div><div class="g"></div>';d.firstChild.append((i+1)+' \u00B7 '+n);$('#chips').appendChild(d);return d.lastChild});
+CP.forEach(([t,d,g],i)=>{const b=document.createElement('button');b.className=ST[g][1];b.innerHTML='<i class="n"></i><code></code><small></small>';b.children[1].textContent=t;b.children[2].textContent=d;
+ b.onclick=()=>{run(t);inp.focus();b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop')};CB.push(b);GS[g].appendChild(b)});
+function paint(){CB.forEach((b,i)=>{b.classList.toggle('done',i<P);b.classList.toggle('next',i===P);b.children[0].textContent=i<P?'\u2713':i+1});
+ hint.textContent=P<CP.length?`Step ${P+1} of ${CP.length}: tap the glowing chip, or type the command yourself.`:'All done! Now try it for real on your laptop (see the steps below).'}
+function adv(l){if(P<CP.length&&l.replace(/\s+/g,' ')===CP[P][0]){P++;paint()}}
+function resetChips(){P=0;paint()}
 $('#reset').onclick=fresh;fresh();
 const steps=[...document.querySelectorAll('#steps input')];
 try{const s=JSON.parse(localStorage.getItem('gdgSteps')||'[]');steps.forEach((x,i)=>x.checked=!!s[i])}catch(e){}
