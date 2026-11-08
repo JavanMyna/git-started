@@ -621,5 +621,153 @@ CH.forEach(([c,d])=>{const b=document.createElement('button');b.innerHTML=`<code
  b.onclick=()=>{const done=()=>$('#copied').textContent='Copied: '+c;(navigator.clipboard?navigator.clipboard.writeText(c):Promise.reject()).then(done,()=>{const t=document.createElement('textarea');t.value=c;document.body.appendChild(t);t.select();try{document.execCommand('copy')}catch(e){}t.remove();done()})};
  $('#cheatGrid').appendChild(b)});
   </script>
+
+<!-- ============================================================
+git branch visual
+============================================================= -->
+<style>
+/* ---------- Roomier terminal ---------- */
+.term{font-size:15px}
+#out{height:440px;padding:18px 20px 12px;line-height:1.65}
+#out div{min-height:1.65em}
+#out .cmdl{margin-top:16px;color:#fff;font-weight:500}
+#out .cmdl:first-child{margin-top:0}
+#out .cmdl .pr{color:#5cdb6d}
+#out .x{color:#9aa0a6;border-left:3px solid #57caff;padding-left:10px;margin:6px 0 0;font:400 13.5px/1.5 var(--sans)}
+.row{padding:12px 20px;border-top:1px solid #3a3a3a;background:#232323}
+.chipbox{padding:16px 20px 18px}
+#hint{display:none}
+@media(min-width:821px){.play>.card{position:sticky;top:76px}}
+@media(max-width:820px){#out{height:340px}}
+
+/* "Do this next" coach + progress */
+.coach .cl{font:500 12px var(--mono);color:#b5b5b5;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.coach button{width:100%;display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:left;color:#f0f0f0;background:var(--cb);border:2px solid var(--ca);border-radius:14px;padding:14px 16px;cursor:pointer;font:inherit;box-shadow:0 0 18px -4px var(--ca)}
+.coach button code{font:600 16px var(--mono);overflow-wrap:anywhere}
+.coach button small{font:400 14px var(--sans);color:#c8c8c8}
+.prog{height:6px;background:#3a3a3a;border-radius:6px;margin:14px 0 0;overflow:hidden}
+.prog i{display:block;height:100%;width:0;background:var(--grn);transition:width .3s}
+.chipbox details.all{background:none;border:0;border-radius:0;padding:0;margin:14px 0 0}
+.chipbox details.all summary{color:#9aa0a6;font:500 13px var(--mono)}
+.chipbox details.all #chips{margin-top:12px}
+
+/* ---------- Animated branch diagram ---------- */
+#brSvg{width:100%;height:auto;display:block}
+#brSvg .seg{fill:none;stroke:var(--ink);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;opacity:0;transition:stroke-dashoffset .8s ease-in-out,opacity .01s}
+#brSvg .m2{transition:stroke-dashoffset .8s ease-in-out,opacity .5s}
+.bs1 .m1,.bs2 .b1,.bs3 .b2,.bs4 .b3{opacity:1!important;stroke-dashoffset:0!important}
+.bs2 .m2{opacity:.3!important;stroke-dashoffset:0!important}
+.bs4 .m2{opacity:1!important}
+#brSvg .dot{stroke:var(--ink);stroke-width:2.5;opacity:0;transform:scale(0);transform-box:fill-box;transform-origin:center;transition:transform .45s cubic-bezier(.3,1.6,.5,1),opacity .2s}
+.bs1 .d1,.bs1 .d2,.bs3 .d3,.bs3 .d4,.bs4 .d5,.bs5 .d6{opacity:1!important;transform:scale(1)!important}
+#brSvg .d1{transition-delay:.3s}#brSvg .d2{transition-delay:.75s}
+#brSvg .d3{transition-delay:.35s}#brSvg .d4{transition-delay:.65s}
+#brSvg .d5{transition-delay:.75s}#brSvg .d6{transition-delay:.2s}
+#brSvg .lb{font:600 12px var(--mono);fill:var(--ink)}
+#brSvg .lb2,#brSvg .lb3{opacity:0;transition:opacity .5s .4s}
+.bs2 .lb2,.bs4 .lb3{opacity:1!important}
+#brSvg .head{opacity:0;transform:translate(100px,106px);transition:transform .7s cubic-bezier(.5,0,.2,1),opacity .4s}
+#brSvg .head text{font:700 11px var(--mono);fill:#1e1e1e}
+.bs1 .head{opacity:1!important;transform:translate(100px,106px)}
+.bs2 .head{transform:translate(150px,6px)}
+.bs3 .head{transform:translate(220px,6px)}
+.bs4 .head{transform:translate(310px,106px);transition-delay:.8s}
+.bs5 .head{transform:translate(370px,106px);transition-delay:.3s}
+#brSvg.noanim *{transition:none!important}
+@media(prefers-reduced-motion:reduce){#brSvg *{transition:none!important}}
+.brbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:6px}
+#brCap{flex:1 1 100%;min-height:3.4em;margin:6px 0 0;font-size:.95em}
+.brdots{display:flex;gap:8px}
+.brdots button{width:16px;height:16px;border-radius:50%;border:2px solid var(--ink);background:transparent;padding:0;cursor:pointer}
+.brdots button.on{background:var(--blue)}
+#brReplay{margin-left:auto;padding:4px 12px;font-size:14px}
+</style>
+
+<script>
+/* ---------- 1. Terminal: clearer commands + plain-English notes ---------- */
+say=function(t,c){const d=document.createElement('div');
+ if(c==='d'&&t.startsWith('~/my-site $ ')){d.className='cmdl';const p=document.createElement('span');p.className='pr';p.textContent='~/my-site $ ';d.append(p,t.slice(12))}
+ else{if(c)d.className=c;d.textContent=t}
+ out.appendChild(d);out.scrollTop=out.scrollHeight};
+
+const _git=git;
+git=function(a){if(a[0]==='init'&&S.init){say('Reinitialized existing Git repository in ~/my-site/.git/','p');return}_git(a)};
+
+const TIPS=[[/^echo /,'Made a file. New files start out \u201Cuntracked\u201D.'],
+[/^git init/,'Git is now watching this folder.'],
+[/^git status/,'Your \u201Cwhat changed?\u201D check. Use it often.'],
+[/^git add/,'Staged: these changes are lined up for the next snapshot.'],
+[/^git commit/,'Saved! That snapshot is now in your history.'],
+[/^git log/,'Your history, newest snapshot first.'],
+[/^git (switch|checkout) (-c|-b)/,'New branch created and you\u2019re standing on it. main is untouched.'],
+[/^git (switch|checkout)/,'Moved to that branch. Your files now match it.'],
+[/^git merge/,'The branch\u2019s work is now part of the branch you\u2019re on.'],
+[/^git push/,'Your commits are now on GitHub.']];
+function tip(l){const L=out.lastElementChild;if(!L)return;
+ if(L.classList.contains('r')||(L.classList.contains('y')&&!/^git log/.test(l)))return;
+ const t=TIPS.find(([re])=>re.test(l));if(t)say('\u21B3 '+t[1],'x')}
+const _run=run;
+run=function(l){const t=l.trim();_run(l);if(t)tip(t)};
+
+/* ---------- 2. "Do this next" coach; other chips tucked away ---------- */
+(()=>{const box=$('.chipbox'),coach=document.createElement('div'),prog=document.createElement('div'),det=document.createElement('details');
+ coach.className='coach';coach.id='coach';prog.className='prog';prog.innerHTML='<i></i>';prog.id='pg';
+ det.className='all';det.innerHTML='<summary>Show all '+CP.length+' commands</summary>';det.appendChild($('#chips'));
+ box.append(coach,prog,det)})();
+paint=function(){
+ CB.forEach((b,i)=>{b.classList.toggle('done',i<P);b.classList.toggle('next',i===P);b.children[0].textContent=i<P?'\u2713':i+1});
+ const c=$('#coach'),n=CP.length;$('#pg i').style.width=(P/n*100)+'%';c.textContent='';
+ if(P>=n){c.textContent='All done! Now try it for real on your laptop (see the steps below).';return}
+ const [t,d,g]=CP[P],l=document.createElement('div'),b=document.createElement('button'),k=document.createElement('code'),s=document.createElement('small');
+ l.className='cl';l.textContent='Step '+(P+1)+' of '+n+' \u00B7 '+ST[g][0];
+ b.type='button';b.className=ST[g][1];k.textContent=t;s.textContent=d+' \u2014 tap it, or type it yourself.';
+ b.append(k,s);b.onclick=()=>{run(t);inp.focus()};c.append(l,b)};
+fresh();
+
+/* ---------- 3. Animated branch diagram ---------- */
+(()=>{const old=document.querySelector('#branches svg');if(!old)return;
+ const w=document.createElement('div');
+ w.innerHTML=`<svg id="brSvg" viewBox="0 0 420 140" role="img" aria-label="Animation: a dark-mode branch splits off main, gets two commits, then merges back">
+  <path class="seg m1" d="M20 95H120" pathLength="1"/>
+  <path class="seg m2" d="M120 95H400" pathLength="1"/>
+  <path class="seg b1" d="M120 95L170 38" pathLength="1"/>
+  <path class="seg b2" d="M170 38H260" pathLength="1"/>
+  <path class="seg b3" d="M260 38L330 95" pathLength="1"/>
+  <circle class="dot d1" cx="60" cy="95" r="9" fill="var(--blue)"/>
+  <circle class="dot d2" cx="120" cy="95" r="9" fill="var(--blue)"/>
+  <circle class="dot d3" cx="195" cy="38" r="9" fill="var(--grn)"/>
+  <circle class="dot d4" cx="240" cy="38" r="9" fill="var(--grn)"/>
+  <circle class="dot d5" cx="330" cy="95" r="9" fill="var(--red)"/>
+  <circle class="dot d6" cx="390" cy="95" r="9" fill="var(--blue)"/>
+  <text class="lb" x="20" y="122">main</text>
+  <text class="lb lb2" x="190" y="64">dark-mode</text>
+  <text class="lb lb3" x="342" y="82">merge</text>
+  <g class="head"><rect width="40" height="18" rx="9" fill="var(--yel)" stroke="var(--ink)" stroke-width="2"/><text x="20" y="13" text-anchor="middle">HEAD</text></g>
+ </svg>
+ <div class="brbar"><p id="brCap" aria-live="polite"></p><div class="brdots" id="brDots"></div><button class="btn" id="brReplay" type="button">\u21BB Replay</button></div>`;
+ old.replaceWith(...w.childNodes);
+
+ const CAPS=[
+  'Watch how a branch works\u2026',
+  '<b>1.</b> <code>main</code> has two commits. <b>HEAD</b> is where you\u2019re working right now.',
+  '<b>2.</b> <code>git switch -c dark-mode</code> splits off a new branch. <code>main</code> stays safe.',
+  '<b>3.</b> New commits only grow <code>dark-mode</code>. <code>main</code> doesn\u2019t change.',
+  '<b>4.</b> <code>git switch main</code> then <code>git merge dark-mode</code> bring the work back.',
+  '<b>5.</b> Done! <code>main</code> now has dark mode. Tidy up with <code>git branch -d dark-mode</code>.'];
+ const bs=$('#brSvg'),cap=$('#brCap'),dots=$('#brDots'),calm=matchMedia('(prefers-reduced-motion:reduce)').matches;
+ let st=0,tm,seen=false;
+ const dotBtns=[1,2,3,4,5].map(i=>{const b=document.createElement('button');b.type='button';b.setAttribute('aria-label','Show step '+i);
+  b.onclick=()=>{clearTimeout(tm);show(i)};dots.appendChild(b);return b});
+ function show(n){st=n;for(let i=1;i<=5;i++)bs.classList.toggle('bs'+i,i<=n);cap.innerHTML=CAPS[n];dotBtns.forEach((b,i)=>b.classList.toggle('on',i+1===n))}
+ function tick(){if(st<5){show(st+1);tm=setTimeout(tick,2400)}else if(!calm&&seen){tm=setTimeout(play,4000)}}
+ function play(){clearTimeout(tm);bs.classList.add('noanim');show(0);void bs.getBoundingClientRect();bs.classList.remove('noanim');tm=setTimeout(tick,500)}
+ $('#brReplay').onclick=play;
+ show(calm?5:0);
+ new IntersectionObserver(es=>{seen=es[0].isIntersecting;
+  if(seen&&!calm&&st===0)play();
+  else if(!seen)clearTimeout(tm);
+  else if(!calm&&st>0&&st<5)tm=setTimeout(tick,1200)},{threshold:.4}).observe(bs)})();
+</script>
+
  </body>
 </html>
