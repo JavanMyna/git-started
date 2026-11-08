@@ -4,7 +4,8 @@ A single-file learning page for beginners, built for the "Gitting Over It" works
 
 No build step, no dependencies. Everything (HTML, CSS, JS) lives in `index.html`.
 
-**Live page:** https://javanmyna.github.io/git-started/
+**Dont confuse this website link with the one you will create later!**
+>   **Live page:** https://javanmyna.github.io/git-started/
 
 ## Use it in the workshop
 
