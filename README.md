@@ -1,5 +1,7 @@
 # Git & GitHub Pages Playground
 
+fred was here
+
 A single-file learning page for beginners, built for the "Gitting Over It" workshop (GDG on Campus, USM). It has a pretend terminal for practising Git commands safely, a short "go live" checklist for GitHub Pages, a few fixes for common errors and a small cheat sheet.
 
 No build step, no dependencies. Everything (HTML, CSS, JS) lives in `index.html`.
